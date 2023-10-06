@@ -34,15 +34,24 @@ EmbeddingsProvider embeddingsProvider = new EmbeddingsProvider(openAiService);
 
 ExcelTrainingPhraseReader excelReader = new ExcelTrainingPhraseReader(embeddingsProvider);
 
-List<SalesManBotWithEmbeddings.Model.TrainingPhrase> trainingPhrases = await excelReader.GetTrainingPhrases();
 
+Console.WriteLine("Creating Index....");
 
 await repo.CreateIndex();
+
+Console.WriteLine("Getting data from excel....");
+
+List<SalesManBotWithEmbeddings.Model.TrainingPhrase> trainingPhrases = await excelReader.GetTrainingPhrases();
+
+Console.WriteLine("Uploading embeddings");
+
 await repo.Create(trainingPhrases);
 
 
 while (true)
 {
+    Console.WriteLine("Write a promp.");
+
     string? userPromp = Console.ReadLine();
 
     if (string.IsNullOrEmpty(userPromp))
