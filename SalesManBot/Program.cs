@@ -6,7 +6,7 @@ using OpenAI.ObjectModels;
 using OpenAI.ObjectModels.RequestModels;
 using SalesManBot;
 
-string? apiKey = Environment.GetEnvironmentVariable("MY_OPEN_AI_API_KEY");
+string? apiKey = "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";
 
 ArgumentException.ThrowIfNullOrEmpty(apiKey);
 
@@ -20,6 +20,11 @@ string menu = Constants.SystemPromp;
 List<ChatMessage> fullConversation = new List<ChatMessage>()
 {
     ChatMessage.FromSystem(menu),
+    ChatMessage.FromUser("que tienen de bebidas?"),
+    ChatMessage.FromAssistant("De momento no tenemos bebidas en nuestro menu"),
+    ChatMessage.FromUser("a que hora cierran?"),
+    ChatMessage.FromAssistant("Verifique en mi configuracion y no observo horarios definidos")
+
 };
 
 Console.WriteLine("Write a promp to start the chat.");
