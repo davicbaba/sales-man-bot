@@ -29,17 +29,26 @@ namespace SalesManBotWithEmbeddings
             // Create a new index if it doesn't exist
             var indexName = IndexName;
             if (indexes.Contains(indexName))
-                await _pineconeClient.DeleteIndex(indexName);
+                return;
 
-            await _pineconeClient.CreateIndex(indexName, 1536, Metric.Cosine);
+            await _pineconeClient.CreateIndex(indexName, 1024, Metric.Cosine);
+
         }
 
 
         public async Task Create(List<TrainingPhrase> trainingPhrases)
         {
             // Get an index by name
-            using var index = await _pineconeClient.GetIndex(IndexName);
+            var index = await _pineconeClient.GetIndex(IndexName);
 
+            while(index.Status.IsReady == false)
+            {
+                Console.WriteLine("Index is not ready.... Waiting 5 seconds to retry");
+
+                await Task.Delay(5000);
+
+                index = await _pineconeClient.GetIndex(IndexName);
+            }
 
             Vector[] vectors = trainingPhrases.Select(promp => new Vector
             {
@@ -62,9 +71,16 @@ namespace SalesManBotWithEmbeddings
 
             float[] vector = embeddings.Select(x => (float)x).ToArray();
 
-            ScoredVector[] scored = await index.Query(vector, top);
+            ScoredVector[] scored = await index.Query(vector, top, includeMetadata: true);
+
             //todo aqui no se como convertir al model
-            return scored.Select(o => new TrainingPhrase(o.Id, null, null)).ToList();
+            return scored.Select(o => {
+
+                string content = o.Metadata["Content"].Inner.ToString();
+                List<double> embeddings = o.Values.Select(t => (double)t).ToList();
+
+                return new TrainingPhrase(o.Id, content, embeddings);
+            }).ToList();
         }
 
 
