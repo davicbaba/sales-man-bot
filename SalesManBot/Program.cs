@@ -19,11 +19,7 @@ string menu = Constants.SystemPromp;
 
 List<ChatMessage> fullConversation = new List<ChatMessage>()
 {
-    ChatMessage.FromSystem(menu),
-    ChatMessage.FromUser("que tienen de bebidas?"),
-    ChatMessage.FromAssistant("De momento no tenemos bebidas en nuestro menu"),
-    ChatMessage.FromUser("a que hora cierran?"),
-    ChatMessage.FromAssistant("Verifique en mi configuracion y no observo horarios definidos")
+    ChatMessage.FromSystem(menu)
 
 };
 
@@ -42,7 +38,8 @@ while (true)
     string result = await GetNextPromp(openAiService, fullConversation,userPromp);
     
     Console.WriteLine(result);
-    
+
+    fullConversation.Add(ChatMessage.FromUser(userPromp));
     fullConversation.Add(ChatMessage.FromAssistant(result));
 }
 
@@ -57,6 +54,7 @@ async Task<string> GetNextPromp(OpenAIService aiService,
     {
         Messages = conversationCopy,
         Model = Models.Gpt_3_5_Turbo,
+        Temperature = 0.0f
     });
     if (completionResult.Successful == false)
         throw new ArgumentException("Failed to get the next promp");
