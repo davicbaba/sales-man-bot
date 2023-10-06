@@ -24,7 +24,7 @@ namespace SalesManBotWithEmbeddings
             OpenAI.ObjectModels.ResponseModels.EmbeddingCreateResponse embeddingResult = await _openAIService.Embeddings.CreateEmbedding(new EmbeddingCreateRequest()
             {
                 InputAsList = new List<string> { text },
-                Model = Models.TextSearchAdaDocV1
+                Model = Models.TextEmbeddingAdaV2
             });
 
             OpenAI.ObjectModels.ResponseModels.EmbeddingResponse result = embeddingResult.Data.First();

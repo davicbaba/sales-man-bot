@@ -31,7 +31,7 @@ namespace SalesManBotWithEmbeddings
             if (indexes.Contains(indexName))
                 return;
 
-            await _pineconeClient.CreateIndex(indexName, 1024, Metric.Cosine);
+            await _pineconeClient.CreateIndex(indexName, 1536, Metric.Cosine);
 
         }
 

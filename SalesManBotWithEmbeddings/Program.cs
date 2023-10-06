@@ -66,7 +66,7 @@ while (true)
 
     foreach(var phrase in topPhrases)
     {
-        Console.WriteLine(phrase.Content);
+        Console.WriteLine($"Id: {phrase.Id}. Content: {phrase.Content}");
     }
 
 
