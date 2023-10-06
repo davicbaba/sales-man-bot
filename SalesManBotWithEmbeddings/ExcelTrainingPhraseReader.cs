@@ -37,7 +37,7 @@ namespace SalesManBotWithEmbeddings
 
                         List<double> embeddings = await _embeddingsProvider.GetEmbeddings(value);
 
-                        result.Add(new TrainingPhrase(Guid.NewGuid().ToString(), value, embeddings));
+                        result.Add(new TrainingPhrase(row.ToString(), value, embeddings));
                     }
                 }
             }
