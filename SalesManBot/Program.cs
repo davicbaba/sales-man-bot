@@ -6,7 +6,7 @@ using OpenAI.ObjectModels;
 using OpenAI.ObjectModels.RequestModels;
 using SalesManBot;
 
-string? apiKey = "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";
+string? apiKey = "KEY";
 
 ArgumentException.ThrowIfNullOrEmpty(apiKey);
 
